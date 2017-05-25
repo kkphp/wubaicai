@@ -1,4 +1,6 @@
 - 关于我们
     - [关于极客学院](about-us.md)
     - [关于极客学院 Wiki](about-wiki.md)
+    - [关于吃饭问题](about-eat.md)
+    - [端午节干涉吗](about-doing.md)
 - [联系我们](contact.md)
