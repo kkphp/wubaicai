@@ -1,6 +1,6 @@
 - 深度学习入门
-    [新手入门](getting-start.md)
-    - [识别数字](recognition-digit.md)
+- [新手入门](getting-start.md)
+- [识别数字](recognition-digit.md)
     - [图像分类](image-classify.md)
     - [词向量](word-vector.md)
     - [个性化推荐](personality-recommend.md)
