@@ -1,8 +1,10 @@
-- 关于我们
-    - [关于极客学院](about-us.md)
-    - [关于极客学院 Wiki](about-wiki.md)
-    - [关于吃饭问题](about-eat.md)
-    - [端午节干涉吗](about-doing.md)
-    - [这周上6天班是不是 是不是 是不是]
-    - 武白菜武白菜(about-baicai.md)
+- 深度学习入门
+    - [新手入门](getting-start.md)
+    - [识别数字](recognition-digit.md)
+    - [图像分类](image-classify.md)
+    - [词向量](word-vector.md)
+    - [个性化推荐](personality-recommend.md)
+    - [情感分析](emotion-analysis.md)
+    - [词义角色标注](wordSence-identify)
+    - [机器翻译](machine-translation.md)
 - [联系我们](contact.md)
