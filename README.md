@@ -1,5 +1,5 @@
-#深度学习入门
-  - [新手入门](getting-start.md)  
+#深度学习入门  
+  - [新手入门](https://github.com/baiaicaiai/wubaicai/blob/master/1.GettingStart/getting-start.md)  
   - [识别数字](recognition-digit.md)  
   - [图像分类](image-classify.md)  
   - [词向量](word-vector.md)  
