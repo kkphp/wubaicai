@@ -1,7 +1,4 @@
-# simple
-
-Wiki 示例空白仓库，直接 `fork` 该仓库然后填充内容即可。
-- 深度学习入门
+#深度学习入门
   - [新手入门](getting-start.md)  
   - [识别数字](recognition-digit.md)  
   - [图像分类](image-classify.md)  
