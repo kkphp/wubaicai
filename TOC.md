@@ -7,3 +7,4 @@
   - [情感分析](emotion-analysis.md)
   - [词义角色标注](wordSence-identify.md)
   - [机器翻译](machine-translation.md)
+  - [测试一下](test.md)
