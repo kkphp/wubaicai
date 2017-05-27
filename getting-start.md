@@ -15,7 +15,7 @@ $$y_i = \omega_1x_{i1} + \omega_2x_{i2} + \ldots + \omega_dx_{id} + b,  i=1,\ldo
 ## 效果展示
 我们使用从[UCI Housing Data Set](https://archive.ics.uci.edu/ml/datasets/Housing)获得的波士顿房价数据集进行模型的训练和预测。下面的散点图展示了使用模型对部分房屋价格进行的预测。其中，每个点的横坐标表示同一类房屋真实价格的中位数，纵坐标表示线性回归模型根据特征预测的结果，当二者值完全相等的时候就会落在虚线上。所以模型预测得越准确，则点离虚线越近。
 <p align="center">
-    <img src = "image/predictions.png" width=400><br/>
+    <img src = "image/01-01.png" width=400><br/>
     图1. 预测值 V.S. 真实值
 </p>
 
@@ -96,7 +96,7 @@ import paddle.v2.dataset.uci_housing as uci_housing
 - 很多的机器学习技巧/模型（例如L1，L2正则项，向量空间模型-Vector Space Model）都基于这样的假设：所有的属性取值都差不多是以0为均值且取值范围相近的。
 
 <p align="center">
-    <img src = "image/ranges.png" width=550><br/>
+    <img src = "image/01-02.png" width=550><br/>
     图2. 各维属性的取值范围
 </p>
 
@@ -215,7 +215,7 @@ trainer.train(
     num_passes=30)
 ```
 
-![png](./image/train_and_test.png)
+![png](./image/01-03.png)
 
 ## 总结
 在这章里，我们借助波士顿房价这一数据集，介绍了线性回归模型的基本概念，以及如何使用PaddlePaddle实现训练和测试的过程。很多的模型和技巧都是从简单的线性回归模型演化而来，因此弄清楚线性模型的原理和局限非常重要。
