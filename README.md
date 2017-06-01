@@ -1,14 +1,16 @@
 # 深度学习入门  
-  - [新手入门](https://github.com/baiaicaiai/wubaicai/blob/master/getting-start.md)  
-  - [识别数字](https://github.com/baiaicaiai/wubaicai/blob/master/recognition-digit.md)  
-  - [图像分类](https://github.com/baiaicaiai/wubaicai/blob/master/image-classify.md)  
-  - [词向量](https://github.com/baiaicaiai/wubaicai/blob/master/word-vector.md)  
-  - [个性化推荐](https://github.com/baiaicaiai/wubaicai/blob/master/personality-recommend.md)  
-  - [情感分析](https://github.com/baiaicaiai/wubaicai/blob/master/emotion-analysis.md)
-  - [词义角色标注](https://github.com/baiaicaiai/wubaicai/blob/master/wordSence-identify.md)
-  - [机器翻译](https://github.com/baiaicaiai/wubaicai/blob/master/machine-translation.md)
- 
+
+- [新手入门](getting-start.md)  
+- [识别数字](recognition-digit.md)  
+- [图像分类](image-classify.md)  
+- [词向量](word-vector.md)  
+- [个性化推荐](personality-recommend.md)  
+- [情感分析](emotion-analysis.md)
+- [词义角色标注](wordSence-identify.md)
+- [机器翻译](machine-translation.md)
+
 ## 运行这本书
+
 您现在在看的这本书是一本“交互式”电子书 —— 每一章都可以运行在一个Jupyter Notebook里。
 
 我们把Jupyter、PaddlePaddle、以及各种被依赖的软件都打包进一个Docker image了。所以您不需要自己来安装各种软件，只需要安装Docker即可。对于各种Linux发行版，请参考 https://www.docker.com 。如果您使用[Windows](https://www.docker.com/docker-windows)或者[Mac](https://www.docker.com/docker-mac)，可以考虑[给Docker更多内存和CPU资源](http://stackoverflow.com/a/39720010/724872)。
@@ -42,15 +44,16 @@ nvidia-docker run -d -p 8888:8888 docker.paddlepaddle.org/book:0.10.0rc2-gpu
 ```
 
 还需要将以下代码
+
 ```python
 paddle.init(use_gpu=False, trainer_count=1)
 ```
 
 改成：
+
 ```python
 paddle.init(use_gpu=True, trainer_count=1)
 ```
-
 
 ## 贡献内容
 

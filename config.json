@@ -1,4 +1,4 @@
 ﻿{
-    "name": "项目名称，必填",
-    "introduction": "Wiki 首页的项目介绍，必填"
+    "name": "深度学习入门",
+    "introduction": "paddlepaddle官方深度学习入门"
 }
