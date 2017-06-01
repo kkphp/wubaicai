@@ -19,8 +19,10 @@ $$y_i = \omega_1x_{i1} + \omega_2x_{i2} + \ldots + \omega_dx_{id} + b,  i=1,\ldo
 ## 效果展示
 
 我们使用从[UCI Housing Data Set](https://archive.ics.uci.edu/ml/datasets/Housing)获得的波士顿房价数据集进行模型的训练和预测。下面的散点图展示了使用模型对部分房屋价格进行的预测。其中，每个点的横坐标表示同一类房屋真实价格的中位数，纵坐标表示线性回归模型根据特征预测的结果，当二者值完全相等的时候就会落在虚线上。所以模型预测得越准确，则点离虚线越近。
-<center>![png](/images/01-01.png)</center>  
-<center>图1. 预测值 V.S. 真实值</center>
+<div align=center>
+![png](/images/01-01.png)
+图1. 预测值 V.S. 真实值
+
 
 ## 模型概览
 
