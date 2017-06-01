@@ -90,7 +90,7 @@ GoogleNet由多组Inception模块堆积而成。另外，在网络最后也没�
 
 GoogleNet整体网络结构如图8所示，总共22层网络：开始由3层普通的卷积组成；接下来由三组子网络组成，第一组子网络包含2个Inception模块，第二组包含5个Inception模块，第三组包含2个Inception模块；然后接均值池化层、全连接层。
 
-![png](/images/03-08.png)
+![jpeg](/images/03-08.jpeg)
 图8. GoogleNet[12]
 
 
