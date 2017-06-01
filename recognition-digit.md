@@ -220,7 +220,8 @@ trainer = paddle.trainer.SGD(cost=cost,
 
 `batch`是一个特殊的decorator，它的输入是一个reader，输出是一个batched reader —— 在PaddlePaddle里，一个reader每次yield一条训练数据，而一个batched reader每次yield一个minibatch。
 
-`event_handler_plot`可以用来在训练过程中画图如下：
+`event_handler_plot`可以用来在训练过程中画图如下： 
+ 
 ![png](/images/02-07.png)
 
 ```python
