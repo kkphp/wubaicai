@@ -180,8 +180,7 @@ dream that one day <e>
 
 本配置的模型结构如下图所示：
 
-![png](/images/04-05.png)  
-<p align="center">
+![png](/images/04-05.png)    
 图5. 模型配置中的N-gram神经网络模型
 
 首先，加载所需要的包：
