@@ -85,7 +85,8 @@ Softmax回归模型采用了最简单的两层神经网络，即只有输入层�
 
 通过介绍卷积计算过程及其特性，可以看出卷积是线性操作，并具有平移不变性（shift-invariant），平移不变性即在图像每个位置执行相同的操作。卷积层的局部连接和权重共享使得需要学习的参数大大减小，这样也有利于训练较大卷积神经网络。
 
-#### 池化层
+#### 池化层  
+
 ![png](./images/02-06.png)  
 图6. 池化层图片
 
@@ -95,6 +96,7 @@ Softmax回归模型采用了最简单的两层神经网络，即只有输入层�
 更详细的关于卷积神经网络的具体知识可以参考[斯坦福大学公开课](http://cs231n.github.io/convolutional-networks/)和[图像分类](https://github.com/PaddlePaddle/book/blob/develop/image_classification/README.md)教程。
 
 ### 常见激活函数介绍  
+
 - sigmoid激活函数： $ f(x) = sigmoid(x) = \frac{1}{1+e^{-x}} $
 
 - tanh激活函数： $ f(x) = tanh(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}} $
