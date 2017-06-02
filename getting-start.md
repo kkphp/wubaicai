@@ -1,5 +1,3 @@
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
 # 线性回归
 
 让我们从经典的线性回归（Linear Regression \[[1](#参考文献)\]）模型开始这份教程。在这一章里，你将使用真实的数据集建立起一个房价预测模型，并且了解到机器学习中的若干重要概念。
@@ -20,7 +18,7 @@ $$y_i = \omega_1x_{i1} + \omega_2x_{i2} + \ldots + \omega_dx_{id} + b,  i=1,\ldo
 
 我们使用从[UCI Housing Data Set](https://archive.ics.uci.edu/ml/datasets/Housing)获得的波士顿房价数据集进行模型的训练和预测。下面的散点图展示了使用模型对部分房屋价格进行的预测。其中，每个点的横坐标表示同一类房屋真实价格的中位数，纵坐标表示线性回归模型根据特征预测的结果，当二者值完全相等的时候就会落在虚线上。所以模型预测得越准确，则点离虚线越近。
 
-![png](/images/01-01.png)  
+![png](./images/01-01.png)  
 图1. 预测值 V.S. 真实值
 
 
@@ -105,7 +103,7 @@ import paddle.v2.dataset.uci_housing as uci_housing
 - 不同的数值范围会导致不同属性对模型的重要性不同（至少在训练的初始阶段如此），而这个隐含的假设常常是不合理的。这会对优化的过程造成困难，使训练时间大大的加长。
 - 很多的机器学习技巧/模型（例如L1，L2正则项，向量空间模型-Vector Space Model）都基于这样的假设：所有的属性取值都差不多是以0为均值且取值范围相近的。
 
-![png](/images/01-02.png)  
+![png](./images/01-02.png)  
 图2. 各维属性的取值范围
 
 #### 整理训练集与测试集
@@ -224,7 +222,7 @@ trainer.train(
     num_passes=30)
 ```
 
-![png](/images/01-03.png)
+![png](./images/01-03.png)
 
 ## 总结
 
