@@ -10,9 +10,9 @@
 
 传统的推荐系统方法主要有：
 
-- 协同过滤推荐（Collaborative Filtering Recommendation）：该方法收集分析用户历史行为、活动、偏好，计算一个用户与其他用户的相似度，利用目标用户的相似用户对商品评价的加权评价值，来预测目标用户对特定商品的喜好程度。优点是可以给用户推荐未浏览过的新产品；缺点是对于没有任何行为的新用户存在冷启动的问题，同时也存在用户与商品之间的交互数据不够多造成的稀疏问题，会导致模型难以找到相近用户。
-- 基于内容过滤推荐[[1](#参考文献)]（Content-based Filtering Recommendation）：该方法利用商品的内容描述，抽象出有意义的特征，通过计算用户的兴趣和商品描述之间的相似度，来给用户做推荐。优点是简单直接，不需要依据其他用户对商品的评价，而是通过商品属性进行商品相似度度量，从而推荐给用户所感兴趣商品的相似商品；缺点是对于没有任何行为的新用户同样存在冷启动的问题。
-- 组合推荐[[2](#参考文献)]（Hybrid Recommendation）：运用不同的输入和技术共同进行推荐，以弥补各自推荐技术的缺点。
+&emsp;&emsp;1.协同过滤推荐（Collaborative Filtering Recommendation）：该方法收集分析用户历史行为、活动、偏好，计算一个用户与其他用户的相似度，利用目标用户的相似用户对商品评价的加权评价值，来预测目标用户对特定商品的喜好程度。优点是可以给用户推荐未浏览过的新产品；缺点是对于没有任何行为的新用户存在冷启动的问题，同时也存在用户与商品之间的交互数据不够多造成的稀疏问题，会导致模型难以找到相近用户。  
+&emsp;&emsp;2.基于内容过滤推荐[[1](#参考文献)]（Content-based Filtering Recommendation）：该方法利用商品的内容描述，抽象出有意义的特征，通过计算用户的兴趣和商品描述之间的相似度，来给用户做推荐。优点是简单直接，不需要依据其他用户对商品的评价，而是通过商品属性进行商品相似度度量，从而推荐给用户所感兴趣商品的相似商品；缺点是对于没有任何行为的新用户同样存在冷启动的问题。  
+&emsp;&emsp;3.组合推荐[[2](#参考文献)]（Hybrid Recommendation）：运用不同的输入和技术共同进行推荐，以弥补各自推荐技术的缺点。  
 
 其中协同过滤是应用最广泛的技术之一，它又可以分为多个子类：基于用户 （User-Based）的推荐[[3](#参考文献)] 、基于物品（Item-Based）的推荐[[4](#参考文献)]、基于社交网络关系（Social-Based）的推荐[[5](#参考文献)]、基于模型（Model-based）的推荐等。1994年明尼苏达大学推出的GroupLens系统[[3](#参考文献)]一般被认为是推荐系统成为一个相对独立的研究方向的标志。该系统首次提出了基于协同过滤来完成推荐任务的思想，此后，基于该模型的协同过滤推荐引领了推荐系统十几年的发展方向。
 
@@ -87,17 +87,17 @@ $$\hat c=max(c)$$
 
 在融合推荐模型的电影推荐系统中：
 
-1. 首先，使用用户特征和电影特征作为神经网络的输入，其中：
+&emsp;&emsp;首先，使用用户特征和电影特征作为神经网络的输入，其中：  
 
-   - 用户特征融合了四个属性信息，分别是用户ID、性别、职业和年龄。
+&emsp;&emsp;&emsp;&emsp;用户特征融合了四个属性信息，分别是用户ID、性别、职业和年龄。  
 
-   - 电影特征融合了三个属性信息，分别是电影ID、电影类型ID和电影名称。
+&emsp;&emsp;&emsp;&emsp;电影特征融合了三个属性信息，分别是电影ID、电影类型ID和电影名称。  
 
-2. 对用户特征，将用户ID映射为维度大小为256的向量表示，输入全连接层，并对其他三个属性也做类似的处理。然后将四个属性的特征表示分别全连接并相加。
+&emsp;&emsp;对用户特征，将用户ID映射为维度大小为256的向量表示，输入全连接层，并对其他三个属性也做类似的处理。然后将四个属性的特征表示分别全连接并相加。  
 
-3. 对电影特征，将电影ID以类似用户ID的方式进行处理，电影类型ID以向量的形式直接输入全连接层，电影名称用文本卷积神经网络得到其定长向量表示。然后将三个属性的特征表示分别全连接并相加。
+&emsp;&emsp;对电影特征，将电影ID以类似用户ID的方式进行处理，电影类型ID以向量的形式直接输入全连接层，电影名称用文本卷积神经网络得到其定长向量表示。然后将三个属性的特征表示分别全连接并相加。  
 
-4. 得到用户和电影的向量表示后，计算二者的余弦相似度作为推荐系统的打分。最后，用该相似度打分和用户真实打分的差异的平方作为该回归模型的损失函数。
+&emsp;&emsp;得到用户和电影的向量表示后，计算二者的余弦相似度作为推荐系统的打分。最后，用该相似度打分和用户真实打分的差异的平方作为该回归模型的损失函数。  
 
 ![png](./images/05-04.png)  
 图4. 融合推荐模型
@@ -149,37 +149,37 @@ print user_info.values()[0]
 这表示，该用户ID是1，女性，年龄比18岁还年轻。职业ID是10。
 
 
-其中，年龄使用下列分布
-*  1:  "Under 18"
-* 18:  "18-24"
-* 25:  "25-34"
-* 35:  "35-44"
-* 45:  "45-49"
-* 50:  "50-55"
-* 56:  "56+"
+其中，年龄使用下列分布  
+&emsp;&emsp;1:  "Under 18"  
+&emsp;&emsp;18:  "18-24"  
+&emsp;&emsp;25:  "25-34"  
+&emsp;&emsp;35:  "35-44"  
+&emsp;&emsp;45:  "45-49"  
+&emsp;&emsp;50:  "50-55"  
+&emsp;&emsp;56:  "56+"  
 
-职业是从下面几种选项里面选则得出:
-*  0:  "other" or not specified
-*  1:  "academic/educator"
-*  2:  "artist"
-*  3:  "clerical/admin"
-*  4:  "college/grad student"
-*  5:  "customer service"
-*  6:  "doctor/health care"
-*  7:  "executive/managerial"
-*  8:  "farmer"
-*  9:  "homemaker"
-* 10:  "K-12 student"
-* 11:  "lawyer"
-* 12:  "programmer"
-* 13:  "retired"
-* 14:  "sales/marketing"
-* 15:  "scientist"
-* 16:  "self-employed"
-* 17:  "technician/engineer"
-* 18:  "tradesman/craftsman"
-* 19:  "unemployed"
-* 20:  "writer"
+职业是从下面几种选项里面选则得出:  
+&emsp;&emsp;0:  "other" or not specified  
+&emsp;&emsp;1:  "academic/educator"  
+&emsp;&emsp;2:  "artist"  
+&emsp;&emsp;3:  "clerical/admin"  
+&emsp;&emsp;4:  "college/grad student"  
+&emsp;&emsp;5:  "customer service"  
+&emsp;&emsp;6:  "doctor/health care"  
+&emsp;&emsp;7:  "executive/managerial"  
+&emsp;&emsp;8:  "farmer"  
+&emsp;&emsp;9:  "homemaker"  
+&emsp;&emsp;10:  "K-12 student"  
+&emsp;&emsp;11:  "lawyer"  
+&emsp;&emsp;12:  "programmer"  
+&emsp;&emsp;13:  "retired"  
+&emsp;&emsp;14:  "sales/marketing"  
+&emsp;&emsp;15:  "scientist"  
+&emsp;&emsp;16:  "self-employed"  
+&emsp;&emsp;17:  "technician/engineer"  
+&emsp;&emsp;18:  "tradesman/craftsman"  
+&emsp;&emsp;19:  "unemployed"  
+&emsp;&emsp;20:  "writer"  
 
 而对于每一条训练/测试数据，均为 <用户特征> + <电影特征> + 评分。
 
