@@ -8,9 +8,14 @@
 
 早期机器翻译系统多为基于规则的翻译系统，需要由语言学家编写两种语言之间的转换规则，再将这些规则录入计算机。该方法对语言学家的要求非常高，而且我们几乎无法总结一门语言会用到的所有规则，更何况两种甚至更多的语言。因此，传统机器翻译方法面临的主要挑战是无法得到一个完备的规则集合\[[1](#参考文献)\]。
 
-为解决以上问题，统计机器翻译（Statistical Machine Translation, SMT）技术应运而生。在统计机器翻译技术中，转化规则是由机器自动从大规模的语料中学习得到的，而非我们人主动提供规则。因此，它克服了基于规则的翻译系统所面临的知识获取瓶颈的问题，但仍然存在许多挑战：1）人为设计许多特征（feature），但永远无法覆盖所有的语言现象；2）难以利用全局的特征；3）依赖于许多预处理环节，如词语对齐、分词或符号化（tokenization）、规则抽取、句法分析等，而每个环节的错误会逐步累积，对翻译的影响也越来越大。
+为解决以上问题，统计机器翻译（Statistical Machine Translation, SMT）技术应运而生。在统计机器翻译技术中，转化规则是由机器自动从大规模的语料中学习得到的，而非我们人主动提供规则。因此，它克服了基于规则的翻译系统所面临的知识获取瓶颈的问题，但仍然存在许多挑战：    
+&emsp;&emsp;1）人为设计许多特征（feature），但永远无法覆盖所有的语言现象；    
+&emsp;&emsp;2）难以利用全局的特征；    
+&emsp;&emsp;3）依赖于许多预处理环节，如词语对齐、分词或符号化（tokenization）、规则抽取、句法分析等，而每个环节的错误会逐步累积，对翻译的影响也越来越大。  
 
-近年来，深度学习技术的发展为解决上述挑战提供了新的思路。将深度学习应用于机器翻译任务的方法大致分为两类：1）仍以统计机器翻译系统为框架，只是利用神经网络来改进其中的关键模块，如语言模型、调序模型等（见图1的左半部分）；2）不再以统计机器翻译系统为框架，而是直接用神经网络将源语言映射到目标语言，即端到端的神经网络机器翻译（End-to-End Neural Machine Translation, End-to-End NMT）（见图1的右半部分），简称为NMT模型。
+近年来，深度学习技术的发展为解决上述挑战提供了新的思路。将深度学习应用于机器翻译任务的方法大致分为两类：  
+&emsp;&emsp;1）仍以统计机器翻译系统为框架，只是利用神经网络来改进其中的关键模块，如语言模型、调序模型等（见图1的左半部分）；     
+&emsp;&emsp;2）不再以统计机器翻译系统为框架，而是直接用神经网络将源语言映射到目标语言，即端到端的神经网络机器翻译（End-to-End Neural Machine Translation, End-to-End NMT）（见图1的右半部分），简称为NMT模型。  
 
 ![png](./images/08-01.png)    
 图1. 基于神经网络的机器翻译系统
@@ -29,8 +34,8 @@
 1 -6.23177   These are the light of hope and relief . <e>
 2 -7.7914  These are the light of hope and the relief of hope . <e>
 ```
-- 左起第一列是生成句子的序号；左起第二列是该条句子的得分（从大到小），分值越高越好；左起第三列是生成的英语句子。
-- 另外有两个特殊标志：`<e>`表示句子的结尾，`<unk>`表示未登录词（unknown word），即未在训练字典中出现的词。
+&emsp;&emsp;左起第一列是生成句子的序号；左起第二列是该条句子的得分（从大到小），分值越高越好；左起第三列是生成的英语句子。  
+&emsp;&emsp;另外有两个特殊标志：`<e>`表示句子的结尾，`<unk>`表示未登录词（unknown word），即未在训练字典中出现的词。  
 
 ## 模型概览
 
@@ -40,9 +45,9 @@
 
 我们已经在[情感分析](https://github.com/PaddlePaddle/book/blob/develop/understand_sentiment/README.md)一章中介绍了循环神经网络（RNN）及长短时间记忆网络（LSTM）。相比于简单的RNN，LSTM增加了记忆单元（memory cell）、输入门（input gate）、遗忘门（forget gate）及输出门（output gate），这些门及记忆单元组合起来大大提升了RNN处理远距离依赖问题的能力。
 
-GRU\[[2](#参考文献)\]是Cho等人在LSTM上提出的简化版本，也是RNN的一种扩展，如下图所示。GRU单元只有两个门：
-- 重置门（reset gate）：如果重置门关闭，会忽略掉历史信息，即历史不相干的信息不会影响未来的输出。
-- 更新门（update gate）：将LSTM的输入门和遗忘门合并，用于控制历史信息对当前时刻隐层输出的影响。如果更新门接近1，会把历史信息传递下去。
+GRU\[[2](#参考文献)\]是Cho等人在LSTM上提出的简化版本，也是RNN的一种扩展，如下图所示。GRU单元只有两个门：  
+&emsp;&emsp;重置门（reset gate）：如果重置门关闭，会忽略掉历史信息，即历史不相干的信息不会影响未来的输出。  
+&emsp;&emsp;更新门（update gate）：将LSTM的输入门和遗忘门合并，用于控制历史信息对当前时刻隐层输出的影响。如果更新门接近1，会把历史信息传递下去。  
 
 ![png](./images/08-02.png)    
 图2. GRU（门控循环单元）
@@ -67,13 +72,16 @@ GRU\[[2](#参考文献)\]是Cho等人在LSTM上提出的简化版本，也是RNN
 
 #### 编码器
 
-编码阶段分为三步：
+编码阶段分为三步：  
 
-1. one-hot vector表示：将源语言句子$x=\left \{ x_1,x_2,...,x_T \right \}$的每个词$x_i$表示成一个列向量$w_i\epsilon \left \{ 0,1 \right \}^{\left | V \right |},i=1,2,...,T$。这个向量$w_i$的维度与词汇表大小$\left | V \right |$ 相同，并且只有一个维度上有值1（该位置对应该词在词汇表中的位置），其余全是0。
+&emsp;&emsp;1.one-hot vector表示：将源语言句子$x=\left \{ x_1,x_2,...,x_T \right \}$的每个词$x_i$表示成一个列向量$w_i\epsilon \left \{ 0,1 \right \}^{\left | V \right |},i=1,2,...,T$。这个向量$w_i$的维度与词汇表大小$\left | V \right |$ 相同，并且只有一个维度上有值1（该位置对应该词在词汇表中的位置），其余全是0。
 
-2. 映射到低维语义空间的词向量：one-hot vector表示存在两个问题，1）生成的向量维度往往很大，容易造成维数灾难；2）难以刻画词与词之间的关系（如语义相似性，也就是无法很好地表达语义）。因此，需再one-hot vector映射到低维的语义空间，由一个固定维度的稠密向量（称为词向量）表示。记映射矩阵为$C\epsilon R^{K\times \left | V \right |}$，用$s_i=Cw_i$表示第$i$个词的词向量，$K$为向量维度。
+&emsp;&emsp;2.映射到低维语义空间的词向量：one-hot vector表示存在两个问题：  
+&emsp;&emsp;&emsp;&emsp;1）生成的向量维度往往很大，容易造成维数灾难；     
+&emsp;&emsp;&emsp;&emsp;2）难以刻画词与词之间的关系（如语义相似性，也就是无法很好地表达语义）。  
+&emsp;&emsp;因此，需再one-hot vector映射到低维的语义空间，由一个固定维度的稠密向量（称为词向量）表示。记映射矩阵为$C\epsilon R^{K\times \left | V \right |}$，用$s_i=Cw_i$表示第$i$个词的词向量，$K$为向量维度。    
 
-3. 用RNN编码源语言词序列：这一过程的计算公式为$h_i=\varnothing _\theta \left ( h_{i-1}, s_i \right )$，其中$h_0$是一个全零的向量，$\varnothing _\theta$是一个非线性激活函数，最后得到的$\mathbf{h}=\left \{ h_1,..., h_T \right \}$就是RNN依次读入源语言$T$个词的状态编码序列。整句话的向量表示可以采用$\mathbf{h}$在最后一个时间步$T$的状态编码，或使用时间维上的池化（pooling）结果。
+&emsp;&emsp;3.用RNN编码源语言词序列：这一过程的计算公式为$h_i=\varnothing _\theta \left ( h_{i-1}, s_i \right )$，其中$h_0$是一个全零的向量，$\varnothing _\theta$是一个非线性激活函数，最后得到的$\mathbf{h}=\left \{ h_1,..., h_T \right \}$就是RNN依次读入源语言$T$个词的状态编码序列。整句话的向量表示可以采用$\mathbf{h}$在最后一个时间步$T$的状态编码，或使用时间维上的池化（pooling）结果。  
 
 第3步也可以使用双向循环神经网络实现更复杂的句编码表示，具体可以用双向GRU实现。前向GRU按照词序列$(x_1,x_2,...,x_T)$的顺序依次编码源语言端词，并得到一系列隐层状态$(\overrightarrow{h_1},\overrightarrow{h_2},...,\overrightarrow{h_T})$。类似的，后向GRU按照$(x_T,x_{T-1},...,x_1)$的顺序依次编码源语言端词，得到$(\overleftarrow{h_1},\overleftarrow{h_2},...,\overleftarrow{h_T})$。最后对于词$x_i$，通过拼接两个GRU的结果得到它的隐层状态，即$h_i=\left [ \overrightarrow{h_i^T},\overleftarrow{h_i^T} \right ]^{T}$。
 
@@ -84,20 +92,20 @@ GRU\[[2](#参考文献)\]是Cho等人在LSTM上提出的简化版本，也是RNN
 
 机器翻译任务的训练过程中，解码阶段的目标是最大化下一个正确的目标语言词的概率。思路是：
 
-1. 每一个时刻，根据源语言句子的编码信息（又叫上下文向量，context vector）$c$、真实目标语言序列的第$i$个词$u_i$和$i$时刻RNN的隐层状态$z_i$，计算出下一个隐层状态$z_{i+1}$。计算公式如下：
+&emsp;&emsp;每一个时刻，根据源语言句子的编码信息（又叫上下文向量，context vector）$c$、真实目标语言序列的第$i$个词$u_i$和$i$时刻RNN的隐层状态$z_i$，计算出下一个隐层状态$z_{i+1}$。计算公式如下：  
 
    $$z_{i+1}=\phi _{\theta '}\left ( c,u_i,z_i \right )$$
 
-   其中$\phi _{\theta '}$是一个非线性激活函数；$c=q\mathbf{h}$是源语言句子的上下文向量，在不使用[注意力机制](#注意力机制)时，如果[编码器](#编码器)的输出是源语言句子编码后的最后一个元素，则可以定义$c=h_T$；$u_i$是目标语言序列的第$i$个单词，$u_0$是目标语言序列的开始标记`<s>`，表示解码开始；$z_i$是$i$时刻解码RNN的隐层状态，$z_0$是一个全零的向量。
+   其中$\phi _{\theta '}$是一个非线性激活函数；$c=q\mathbf{h}$是源语言句子的上下文向量，在不使用[注意力机制](#注意力机制)时，如果[编码器](#编码器)的输出是源语言句子编码后的最后一个元素，则可以定义$c=h_T$；$u_i$是目标语言序列的第$i$个单词，$u_0$是目标语言序列的开始标记`<s>`，表示解码开始；$z_i$是$i$时刻解码RNN的隐层状态，$z_0$是一个全零的向量。  
 
-2. 将$z_{i+1}$通过`softmax`归一化，得到目标语言序列的第$i+1$个单词的概率分布$p_{i+1}$。概率分布公式如下：
+&emsp;&emsp;将$z_{i+1}$通过`softmax`归一化，得到目标语言序列的第$i+1$个单词的概率分布$p_{i+1}$。概率分布公式如下：
 
    $$p\left ( u_{i+1}|u_{&lt;i+1},\mathbf{x} \right )=softmax(W_sz_{i+1}+b_z)$$
 
    其中$W_sz_{i+1}+b_z$是对每个可能的输出单词进行打分，再用softmax归一化就可以得到第$i+1$个词的概率$p_{i+1}$。
 
-3. 根据$p_{i+1}$和$u_{i+1}$计算代价。
-4. 重复步骤1~3，直到目标语言序列中的所有词处理完毕。
+&emsp;&emsp;根据$p_{i+1}$和$u_{i+1}$计算代价。  
+&emsp;&emsp;重复步骤1~3，直到目标语言序列中的所有词处理完毕。  
 
 机器翻译任务的生成过程，通俗来讲就是根据预先训练的模型来翻译源语言句子。生成过程中的解码阶段和上述训练过程的有所差异，具体介绍请见[柱搜索算法](#柱搜索算法)。
 
@@ -131,12 +139,12 @@ e_{ij}&=align(z_i,h_j)\\\\
 
 柱搜索算法使用广度优先策略建立搜索树，在树的每一层，按照启发代价（heuristic cost）（本教程中，为生成词的log概率之和）对节点进行排序，然后仅留下预先确定的个数（文献中通常称为beam width、beam size、柱宽度等）的节点。只有这些节点会在下一层继续扩展，其他节点就被剪掉了，也就是说保留了质量较高的节点，剪枝了质量较差的节点。因此，搜索所占用的空间和时间大幅减少，但缺点是无法保证一定获得最优解。
 
-使用柱搜索算法的解码阶段，目标是最大化生成序列的概率。思路是：
+使用柱搜索算法的解码阶段，目标是最大化生成序列的概率。思路是：  
 
-1. 每一个时刻，根据源语言句子的编码信息$c$、生成的第$i$个目标语言序列单词$u_i$和$i$时刻RNN的隐层状态$z_i$，计算出下一个隐层状态$z_{i+1}$。
-2. 将$z_{i+1}$通过`softmax`归一化，得到目标语言序列的第$i+1$个单词的概率分布$p_{i+1}$。
-3. 根据$p_{i+1}$采样出单词$u_{i+1}$。
-4. 重复步骤1~3，直到获得句子结束标记`<e>`或超过句子的最大生成长度为止。
+&emsp;&emsp;1.每一个时刻，根据源语言句子的编码信息$c$、生成的第$i$个目标语言序列单词$u_i$和$i$时刻RNN的隐层状态$z_i$，计算出下一个隐层状态$z_{i+1}$。  
+&emsp;&emsp;2.将$z_{i+1}$通过`softmax`归一化，得到目标语言序列的第$i+1$个单词的概率分布$p_{i+1}$。  
+&emsp;&emsp;3.根据$p_{i+1}$采样出单词$u_{i+1}$。    
+&emsp;&emsp;4.重复步骤1~3，直到获得句子结束标记`<e>`或超过句子的最大生成长度为止。  
 
 注意：$z_{i+1}$和$p_{i+1}$的计算公式同[解码器](#解码器)中的一样。且由于生成时的每一步都是通过贪心法实现的，因此并不能保证得到全局最优解。
 
@@ -147,10 +155,10 @@ e_{ij}&=align(z_i,h_j)\\\\
 ### 数据预处理
 
 我们的预处理流程包括两步：
-- 将每个源语言到目标语言的平行语料库文件合并为一个文件：
-  - 合并每个`XXX.src`和`XXX.trg`文件为`XXX`。
-  - `XXX`中的第$i$行内容为`XXX.src`中的第$i$行和`XXX.trg`中的第$i$行连接，用'\t'分隔。
-- 创建训练数据的“源字典”和“目标字典”。每个字典都有**DICTSIZE**个单词，包括：语料中词频最高的（DICTSIZE - 3）个单词，和3个特殊符号`<s>`（序列的开始）、`<e>`（序列的结束）和`<unk>`（未登录词）。
+&emsp;&emsp;将每个源语言到目标语言的平行语料库文件合并为一个文件：  
+&emsp;&emsp;&emsp;&emsp;合并每个`XXX.src`和`XXX.trg`文件为`XXX`。  
+&emsp;&emsp;&emsp;&emsp;`XXX`中的第$i$行内容为`XXX.src`中的第$i$行和`XXX.trg`中的第$i$行连接，用'\t'分隔。    
+&emsp;&emsp;创建训练数据的“源字典”和“目标字典”。每个字典都有**DICTSIZE**个单词，包括：语料中词频最高的（DICTSIZE - 3）个单词，和3个特殊符号`<s>`（序列的开始）、`<e>`（序列的结束）和`<unk>`（未登录词）。  
 
 ### 示例数据
 
@@ -174,7 +182,7 @@ is_generating = False
 ```
 
 ### 模型结构
-1. 首先，定义了一些全局变量。
+&emsp;&emsp;首先，定义了一些全局变量。  
 
    ```python
    dict_size = 30000 # 字典维度
@@ -187,24 +195,24 @@ is_generating = False
    max_length = 250 # 生成句子的最大长度
   ```
 
-2. 其次，实现编码器框架。分为三步：
+&emsp;&emsp;其次，实现编码器框架。分为三步：    
 
-   - 输入是一个文字序列，被表示成整型的序列。序列中每个元素是文字在字典中的索引。所以，我们定义数据层的数据类型为`integer_value_sequence`（整型序列），序列中每个元素的范围是`[0, source_dict_dim)`。
+&emsp;&emsp;&emsp;&emsp;输入是一个文字序列，被表示成整型的序列。序列中每个元素是文字在字典中的索引。所以，我们定义数据层的数据类型为`integer_value_sequence`（整型序列），序列中每个元素的范围是`[0, source_dict_dim)`。  
 
    ```python
     src_word_id = paddle.layer.data(
         name='source_language_word',
         type=paddle.data_type.integer_value_sequence(source_dict_dim))
-   ```
-   - 将上述编码映射到低维语言空间的词向量$\mathbf{s}$。
+   ```  
+&emsp;&emsp;&emsp;&emsp;将上述编码映射到低维语言空间的词向量$\mathbf{s}$。  
 
    ```python
     src_embedding = paddle.layer.embedding(
         input=src_word_id,
         size=word_vector_dim,
         param_attr=paddle.attr.ParamAttr(name='_source_language_embedding'))
-   ```
-   - 用双向GRU编码源语言序列，拼接两个GRU的编码结果得到$\mathbf{h}$。
+   ```  
+&emsp;&emsp;&emsp;&emsp;用双向GRU编码源语言序列，拼接两个GRU的编码结果得到$\mathbf{h}$。  
 
    ```python
     src_forward = paddle.networks.simple_gru(
@@ -214,9 +222,9 @@ is_generating = False
     encoded_vector = paddle.layer.concat(input=[src_forward, src_backward])
    ```
 
-3. 接着，定义基于注意力机制的解码器框架。分为三步：
+&emsp;&emsp;接着，定义基于注意力机制的解码器框架。分为三步：    
 
-   - 对源语言序列编码后的结果（见2的最后一步），过一个前馈神经网络（Feed Forward Neural Network），得到其映射。
+&emsp;&emsp;&emsp;&emsp;对源语言序列编码后的结果（见2的最后一步），过一个前馈神经网络（Feed Forward Neural Network），得到其映射。  
 
    ```python
     with paddle.layer.mixed(size=decoder_size) as encoded_proj:
@@ -224,7 +232,7 @@ is_generating = False
             input=encoded_vector)
    ```
 
-   - 构造解码器RNN的初始状态。由于解码器需要预测时序目标序列，但在0时刻并没有初始值，所以我们希望对其进行初始化。这里采用的是将源语言序列逆序编码后的最后一个状态进行非线性映射，作为该初始值，即$c_0=h_T$。
+&emsp;&emsp;&emsp;&emsp;构造解码器RNN的初始状态。由于解码器需要预测时序目标序列，但在0时刻并没有初始值，所以我们希望对其进行初始化。这里采用的是将源语言序列逆序编码后的最后一个状态进行非线性映射，作为该初始值，即$c_0=h_T$。  
 
    ```python
     backward_first = paddle.layer.first_seq(input=src_backward)
@@ -234,12 +242,12 @@ is_generating = False
             input=backward_first)
    ```
 
-   - 定义解码阶段每一个时间步的RNN行为，即根据当前时刻的源语言上下文向量$c_i$、解码器隐层状态$z_i$和目标语言中第$i$个词$u_i$，来预测第$i+1$个词的概率$p_{i+1}$。
-      - decoder_mem记录了前一个时间步的隐层状态$z_i$，其初始状态是decoder_boot。
-      - context通过调用`simple_attention`函数，实现公式$c_i=\sum {j=1}^{T}a_{ij}h_j$。其中，enc_vec是$h_j$，enc_proj是$h_j$的映射（见3.1），权重$a_{ij}$的计算已经封装在`simple_attention`函数中。
-      - decoder_inputs融合了$c_i$和当前目标词current_word（即$u_i$）的表示。
-      - gru_step通过调用`gru_step_layer`函数，在decoder_inputs和decoder_mem上做了激活操作，即实现公式$z_{i+1}=\phi _{\theta '}\left ( c_i,u_i,z_i \right )$。
-      - 最后，使用softmax归一化计算单词的概率，将out结果返回，即实现公式$p\left ( u_i|u_{&lt;i},\mathbf{x} \right )=softmax(W_sz_i+b_z)$。
+&emsp;&emsp;&emsp;&emsp;定义解码阶段每一个时间步的RNN行为，即根据当前时刻的源语言上下文向量$c_i$、解码器隐层状态$z_i$和目标语言中第$i$个词$u_i$，来预测第$i+1$个词的概率$p_{i+1}$。  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;decoder_mem记录了前一个时间步的隐层状态$z_i$，其初始状态是decoder_boot。  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;context通过调用`simple_attention`函数，实现公式$c_i=\sum {j=1}^{T}a_{ij}h_j$。其中，enc_vec是$h_j$，enc_proj是$h_j$的映射（见3.1），权重$a_{ij}$的计算已经封装在`simple_attention`函数中。  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;decoder_inputs融合了$c_i$和当前目标词current_word（即$u_i$）的表示。  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;gru_step通过调用`gru_step_layer`函数，在decoder_inputs和decoder_mem上做了激活操作，即实现公式$z_{i+1}=\phi _{\theta '}\left ( c_i,u_i,z_i \right )$。   
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;最后，使用softmax归一化计算单词的概率，将out结果返回，即实现公式$p\left ( u_i|u_{&lt;i},\mathbf{x} \right )=softmax(W_sz_i+b_z)$。  
 
    ```python
     def gru_decoder_with_attention(enc_vec, enc_proj, current_word):
@@ -271,7 +279,7 @@ is_generating = False
         return out
     ```
 
-4. 定义解码器框架名字，和`gru_decoder_with_attention`函数的前两个输入。注意：这两个输入使用`StaticInput`，具体说明可见[StaticInput文档](https://github.com/PaddlePaddle/Paddle/blob/develop/doc/howto/deep_model/rnn/recurrent_group_cn.md#输入)。
+&emsp;&emsp;定义解码器框架名字，和`gru_decoder_with_attention`函数的前两个输入。注意：这两个输入使用`StaticInput`，具体说明可见[StaticInput文档](https://github.com/PaddlePaddle/Paddle/blob/develop/doc/howto/deep_model/rnn/recurrent_group_cn.md#输入)。
 
     ```python
     decoder_group_name = "decoder_group"
@@ -280,12 +288,12 @@ is_generating = False
     group_inputs = [group_input1, group_input2]
     ```
 
-5. 训练模式下的解码器调用：
+&emsp;&emsp;训练模式下的解码器调用：  
 
-   - 首先，将目标语言序列的词向量trg_embedding，直接作为训练模式下的current_word传给`gru_decoder_with_attention`函数。
-   - 其次，使用`recurrent_group`函数循环调用`gru_decoder_with_attention`函数。
-   - 接着，使用目标语言的下一个词序列作为标签层lbl，即预测目标词。
-   - 最后，用多类交叉熵损失函数`classification_cost`来计算损失值。
+&emsp;&emsp;&emsp;&emsp;首先，将目标语言序列的词向量trg_embedding，直接作为训练模式下的current_word传给`gru_decoder_with_attention`函数。  
+&emsp;&emsp;&emsp;&emsp;其次，使用`recurrent_group`函数循环调用`gru_decoder_with_attention`函数。  
+&emsp;&emsp;&emsp;&emsp;接着，使用目标语言的下一个词序列作为标签层lbl，即预测目标词。  
+&emsp;&emsp;&emsp;&emsp;最后，用多类交叉熵损失函数`classification_cost`来计算损失值。  
 
    ```python
    if not is_generating:
@@ -313,10 +321,10 @@ is_generating = False
        cost = paddle.layer.classification_cost(input=decoder, label=lbl)
     ```
 
-6. 生成模式下的解码器调用：
+&emsp;&emsp;生成模式下的解码器调用：  
 
-   - 首先，在序列生成任务中，由于解码阶段的RNN总是引用上一时刻生成出的词的词向量，作为当前时刻的输入，因此，使用`GeneratedInput`来自动完成这一过程。具体说明可见[GeneratedInput文档](https://github.com/PaddlePaddle/Paddle/blob/develop/doc/howto/deep_model/rnn/recurrent_group_cn.md#输入)。
-   - 其次，使用`beam_search`函数循环调用`gru_decoder_with_attention`函数，生成出序列id。
+&emsp;&emsp;&emsp;&emsp;首先，在序列生成任务中，由于解码阶段的RNN总是引用上一时刻生成出的词的词向量，作为当前时刻的输入，因此，使用`GeneratedInput`来自动完成这一过程。具体说明可见[GeneratedInput文档](https://github.com/PaddlePaddle/Paddle/blob/develop/doc/howto/deep_model/rnn/recurrent_group_cn.md#输入)。    
+&emsp;&emsp;&emsp;&emsp;其次，使用`beam_search`函数循环调用`gru_decoder_with_attention`函数，生成出序列id。  
 
    ```python
    if is_generating:
@@ -348,8 +356,8 @@ is_generating = False
 注意：我们提供的配置在Bahdanau的论文\[[4](#参考文献)\]上做了一些简化，可参考[issue #1133](https://github.com/PaddlePaddle/Paddle/issues/1133)。
 
 ### 训练模型
-
-1. 参数定义
+ 
+&emsp;&emsp;参数定义  
 
     依据模型配置的`cost`定义模型参数。可以打印参数名字，如果在网络配置中没有指定名字，则默认生成。
 
@@ -360,7 +368,7 @@ is_generating = False
             print param
     ```
 
-2. 数据定义
+&emsp;&emsp;数据定义  
 
     获取wmt14的dataset reader。
 
@@ -372,7 +380,7 @@ is_generating = False
             batch_size=5)
     ```
 
-3. 构造trainer
+&emsp;&emsp;构造trainer  
 
     根据优化目标cost,网络拓扑结构和模型参数来构造出trainer用来训练，在构造时还需指定优化方法，这里使用最基本的SGD方法。
 
@@ -386,7 +394,7 @@ is_generating = False
                                      update_equation=optimizer)
     ```
 
-4. 构造event_handler
+&emsp;&emsp;构造event_handler  
 
     可以通过自定义回调函数来评估训练过程中的各种状态，比如错误率等。下面的代码通过event.batch_id % 2 == 0 指定每2个batch打印一次日志，包含cost等信息。
 
@@ -399,7 +407,7 @@ is_generating = False
                         event.pass_id, event.batch_id, event.cost, event.metrics)
     ```
 
-5. 启动训练
+&emsp;&emsp;启动训练  
 
     ```python
     if not is_generating:
@@ -407,7 +415,7 @@ is_generating = False
                 reader=wmt14_reader, event_handler=event_handler, num_passes=2)
     ```
 
- 训练开始后，可以观察到event_handler输出的日志如下：
+&emsp;&emsp;训练开始后，可以观察到event_handler输出的日志如下：  
  ```text
  Pass 0, Batch 0, Cost 148.444983, {'classification_error_evaluator': 1.0}
  .........
@@ -417,7 +425,7 @@ is_generating = False
 
 ### 生成模型
 
-1. 加载预训练的模型
+&emsp;&emsp;加载预训练的模型  
 
     由于NMT模型的训练非常耗时，我们在50个物理节点（每节点含有2颗6核CPU）的集群中，花了5天时间训练了一个模型供大家直接下载使用。该模型大小为205MB，[BLEU评估](#BLEU评估)值为26.92。
 
@@ -425,7 +433,7 @@ is_generating = False
     if is_generating:
         parameters = paddle.dataset.wmt14.model()
     ```
-2. 数据定义
+&emsp;&emsp;数据定义  
 
     从wmt14的生成集中读取前3个样本作为源语言句子。
 
@@ -439,7 +447,7 @@ is_generating = False
             if len(gen_data) == gen_num:
                 break
     ```
-3. 构造infer
+&emsp;&emsp;构造infer  
 
     根据网络拓扑结构和模型参数构造出infer用来生成，在预测时还需要指定输出域`field`，这里使用生成句子的概率`prob`和句子中每个词的`id`。
 
@@ -452,7 +460,7 @@ is_generating = False
             field=['prob', 'id'])
     ```
 
-4. 打印生成结果
+&emsp;&emsp;打印生成结果  
 
     根据源/目标语言字典，将源语言句子和`beam_size`个生成句子打印输出。
 
@@ -481,7 +489,7 @@ is_generating = False
                 print "prob = %f:" % (prob[i][j]), seq_list[i * beam_size + j]
     ```
 
-  生成开始后，可以观察到输出的日志如下：
+&emsp;&emsp;生成开始后，可以观察到输出的日志如下：  
   ```text
   src: <s> Les <unk> se <unk> au sujet de la largeur des sièges alors que de grosses commandes sont en jeu <e>
 

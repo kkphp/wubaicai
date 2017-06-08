@@ -114,7 +114,7 @@ $$\DeclareMathOperator*{\argmax}{arg\,max} L(\lambda, D) = - \text{log}\left(\pr
 
 &emsp;&emsp;构造输入  
 &emsp;&emsp;&emsp;&emsp;输入1是句子序列，输入2是谓词序列，输入3是谓词上下文，从句子中抽取这个谓词前后各$n$个词，构成谓词上下文，用one-hot方式表示，输入4是谓词上下文区域标记，标记了句子中每一个词是否在谓词上下文中；  
-&emsp;&emsp;&emsp;&emsp;将输入2~3均扩展为和输入1一样长的序列；  
+&emsp;&emsp;&emsp;&emsp;将输入2~3均扩展为和输入1一样长的序列；
 &emsp;&emsp;输入1~4均通过词表取词向量转换为实向量表示的词向量序列；其中输入1、3共享同一个词表，输入2和4各自独有词表；  
 &emsp;&emsp;第2步的4个词向量序列作为双向LSTM模型的输入；LSTM模型学习输入序列的特征表示，得到新的特性表示序列；  
 &emsp;&emsp;CRF以第3步中LSTM学习到的特征为输入，以标记序列为监督信号，完成序列标注；  
