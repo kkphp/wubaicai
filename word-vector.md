@@ -87,25 +87,25 @@ $$\frac{1}{T}\sum_t f(w_t, w_{t-1}, ..., w_{t-n+1};\theta) + R(\theta)$$
 图2. N-gram神经网络模型
 
 图2展示了N-gram神经网络模型，从下往上看，该模型分为以下几个部分：
- - 对于每个样本，模型输入$w_{t-n+1},...w_{t-1}$, 输出句子第t个词为字典中`|V|`个词的概率。
+&emsp;&emsp;对于每个样本，模型输入$w_{t-n+1},...w_{t-1}$, 输出句子第t个词为字典中`|V|`个词的概率。  
 
-   每个输入词$w_{t-n+1},...w_{t-1}$首先通过映射矩阵映射到词向量$C(w_{t-n+1}),...C(w_{t-1})$。
+&emsp;&emsp;每个输入词$w_{t-n+1},...w_{t-1}$首先通过映射矩阵映射到词向量$C(w_{t-n+1}),...C(w_{t-1})$。  
 
- - 然后所有词语的词向量连接成一个大向量，并经过一个非线性映射得到历史词语的隐层表示：
+&emsp;&emsp;然后所有词语的词向量连接成一个大向量，并经过一个非线性映射得到历史词语的隐层表示：  
 
     $$g=Utanh(\theta^Tx + b_1) + Wx + b_2$$
 
     其中，$x$为所有词语的词向量连接成的大向量，表示文本历史特征；$\theta$、$U$、$b_1$、$b_2$和$W$分别为词向量层到隐层连接的参数。$g$表示未经归一化的所有输出单词概率，$g_i$表示未经归一化的字典中第$i$个单词的输出概率。
 
- - 根据softmax的定义，通过归一化$g_i$, 生成目标词$w_t$的概率为：
+&emsp;&emsp;根据softmax的定义，通过归一化$g_i$, 生成目标词$w_t$的概率为：  
 
   $$P(w_t | w_1, ..., w_{t-n+1}) = \frac{e^{g_{w_t}}}{\sum_i^{|V|} e^{g_i}}$$
 
- - 整个网络的损失值(cost)为多类分类交叉熵，用公式表示为
+&emsp;&emsp;整个网络的损失值(cost)为多类分类交叉熵，用公式表示为  
 
    $$J(\theta) = -\sum_{i=1}^N\sum_{c=1}^{|V|}y_k^{i}log(softmax(g_k^i))$$
 
-   其中$y_k^i$表示第$i$个样本第$k$类的真实标签(0或1)，$softmax(g_k^i)$表示第i个样本第k类softmax输出的概率。
+&emsp;&emsp;其中$y_k^i$表示第$i$个样本第$k$类的真实标签(0或1)，$softmax(g_k^i)$表示第i个样本第k类softmax输出的概率。  
 
 
 
@@ -199,7 +199,7 @@ N = 5 # 训练5-Gram
 
 接着，定义网络结构：
 
-- 将$w_t$之前的$n-1$个词 $w_{t-n+1},...w_{t-1}$，通过$|V|\times D$的矩阵映射到D维词向量（本例中取D=32）。
+&emsp;&emsp;将$w_t$之前的$n-1$个词 $w_{t-n+1},...w_{t-1}$，通过$|V|\times D$的矩阵映射到D维词向量（本例中取D=32）。  
 
 ```python
 def wordemb(inlayer):
@@ -215,7 +215,7 @@ def wordemb(inlayer):
     return wordemb
 ```
 
-- 定义输入层接受的数据类型以及名字。
+&emsp;&emsp;定义输入层接受的数据类型以及名字。  
 
 ```python
 paddle.init(use_gpu=False, trainer_count=3) # 初始化PaddlePaddle
@@ -239,13 +239,13 @@ Ethird = wordemb(thirdword)
 Efourth = wordemb(fourthword)
 ```
 
-- 将这n-1个词向量经过concat_layer连接成一个大向量作为历史文本特征。
+&emsp;&emsp;将这n-1个词向量经过concat_layer连接成一个大向量作为历史文本特征。  
 
 ```python
 contextemb = paddle.layer.concat(input=[Efirst, Esecond, Ethird, Efourth])
 ```
 
-- 将历史文本特征经过一个全连接得到文本隐层特征。
+&emsp;&emsp;将历史文本特征经过一个全连接得到文本隐层特征。  
 
 ```python
 hidden1 = paddle.layer.fc(input=contextemb,
@@ -258,7 +258,7 @@ hidden1 = paddle.layer.fc(input=contextemb,
                                 learning_rate=1))
 ```
 
-- 将文本隐层特征，再经过一个全连接，映射成一个$|V|$维向量，同时通过softmax归一化得到这`|V|`个词的生成概率。
+&emsp;&emsp;将文本隐层特征，再经过一个全连接，映射成一个$|V|$维向量，同时通过softmax归一化得到这`|V|`个词的生成概率。
 
 ```python
 predictword = paddle.layer.fc(input=hidden1,
@@ -267,7 +267,7 @@ predictword = paddle.layer.fc(input=hidden1,
                               act=paddle.activation.Softmax())
 ```
 
-- 网络的损失函数为多分类交叉熵，可直接调用`classification_cost`函数。
+&emsp;&emsp;网络的损失函数为多分类交叉熵，可直接调用`classification_cost`函数。  
 
 ```python
 cost = paddle.layer.classification_cost(input=predictword, label=nextword)
@@ -275,9 +275,9 @@ cost = paddle.layer.classification_cost(input=predictword, label=nextword)
 
 然后，指定训练相关的参数：
 
-- 训练方法（optimizer)： 代表训练过程在更新权重时采用动量优化器，本教程使用Adam优化器。
-- 训练速度（learning_rate）： 迭代的速度，与网络的训练收敛速度有关系。
-- 正则化（regularization）： 是防止网络过拟合的一种手段，此处采用L2正则化。
+&emsp;&emsp;训练方法（optimizer)： 代表训练过程在更新权重时采用动量优化器，本教程使用Adam优化器。  
+&emsp;&emsp;训练速度（learning_rate）： 迭代的速度，与网络的训练收敛速度有关系。  
+&emsp;&emsp;正则化（regularization）： 是防止网络过拟合的一种手段，此处采用L2正则化。  
 
 ```python
 parameters = paddle.parameters.create(cost)
