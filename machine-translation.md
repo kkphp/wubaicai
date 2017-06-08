@@ -154,7 +154,7 @@ e_{ij}&=align(z_i,h_j)\\\\
 
 ### 数据预处理
 
-我们的预处理流程包括两步：
+我们的预处理流程包括两步：  
 &emsp;&emsp;将每个源语言到目标语言的平行语料库文件合并为一个文件：  
 &emsp;&emsp;&emsp;&emsp;合并每个`XXX.src`和`XXX.trg`文件为`XXX`。  
 &emsp;&emsp;&emsp;&emsp;`XXX`中的第$i$行内容为`XXX.src`中的第$i$行和`XXX.trg`中的第$i$行连接，用'\t'分隔。    
@@ -246,8 +246,8 @@ is_generating = False
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;decoder_mem记录了前一个时间步的隐层状态$z_i$，其初始状态是decoder_boot。  
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;context通过调用`simple_attention`函数，实现公式$c_i=\sum {j=1}^{T}a_{ij}h_j$。其中，enc_vec是$h_j$，enc_proj是$h_j$的映射（见3.1），权重$a_{ij}$的计算已经封装在`simple_attention`函数中。  
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;decoder_inputs融合了$c_i$和当前目标词current_word（即$u_i$）的表示。  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;gru_step通过调用`gru_step_layer`函数，在decoder_inputs和decoder_mem上做了激活操作，即实现公式$z_{i+1}=\phi _{\theta '}\left ( c_i,u_i,z_i \right )$。   
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;最后，使用softmax归一化计算单词的概率，将out结果返回，即实现公式$p\left ( u_i|u_{&lt;i},\mathbf{x} \right )=softmax(W_sz_i+b_z)$。  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;gru_step通过调用`gru_step_layer`函数，在decoder_inputs和decoder_mem上做了激活操作，即实现公式$z_{i+1}=\phi _{\theta '}\left ( c_i,u_i,z_i \right )$。        
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;最后，使用softmax归一化计算单词的概率，将out结果返回，即实现公式$p\left ( u_i|u_{&lt;i},\mathbf{x} \right )=softmax(W_sz_i+b_z)$。    
 
    ```python
     def gru_decoder_with_attention(enc_vec, enc_proj, current_word):
